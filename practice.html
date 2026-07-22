@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex | Profile and Quiz</title>
+    <style>
+        :root {
+            --bg: #f4efe7;
+            --panel: #fffaf3;
+            --ink: #1f2328;
+            --muted: #6b7280;
+            --accent: #184e77;
+            --accent-2: #d97706;
+            --line: rgba(31, 35, 40, 0.12);
+            --shadow: 0 18px 50px rgba(31, 35, 40, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at top left, rgba(24, 78, 119, 0.14), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(217, 119, 6, 0.12), transparent 25%),
+                var(--bg);
+            min-height: 100vh;
+        }
+
+        .page {
+            width: min(1100px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 28px 0 42px;
+        }
+
+        header {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 24px;
+            align-items: stretch;
+            margin-bottom: 24px;
+        }
+
+        .hero, .card {
+            background: rgba(255, 250, 243, 0.84);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+        }
+
+        .hero {
+            padding: 34px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: auto -40px -60px auto;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(24, 78, 119, 0.2), rgba(217, 119, 6, 0.16));
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(24, 78, 119, 0.1);
+            color: var(--accent);
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        h1, h2, h3, p {
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: clamp(2.6rem, 4vw, 4.2rem);
+            line-height: 0.95;
+            margin: 18px 0 14px;
+        }
+
+        .lead {
+            max-width: 60ch;
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: var(--muted);
+        }
+
+        .quick-facts {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 22px;
+        }
+
+        .fact {
+            padding: 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--line);
+        }
+
+        .fact strong {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .portrait {
+            padding: 30px;
+            display: grid;
+            place-items: center;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 4rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, var(--accent), #3a7ca5);
+            box-shadow: inset 0 0 0 10px rgba(255, 255, 255, 0.15);
+            margin-bottom: 18px;
+        }
+
+        .portrait p {
+            color: var(--muted);
+            max-width: 24ch;
+            line-height: 1.6;
+        }
+
+        main {
+            display: grid;
+            gap: 24px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .card {
+            padding: 26px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .muted {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .list li {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(24, 78, 119, 0.06);
+            border: 1px solid rgba(24, 78, 119, 0.1);
+        }
+
+        .timeline {
+            display: grid;
+            gap: 14px;
+        }
+
+        .timeline-item {
+            padding: 16px;
+            border-left: 4px solid var(--accent-2);
+            background: rgba(255, 255, 255, 0.65);
+            border-radius: 0 16px 16px 0;
+        }
+
+        .quiz-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .question {
+            padding: 16px;
+            border-radius: 18px;
+            background: rgba(31, 35, 40, 0.03);
+            border: 1px solid var(--line);
+        }
+
+        .question h3 {
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .choices {
+            display: grid;
+            gap: 10px;
+        }
+
+        label.choice {
+            display: block;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        button {
+            border: 0;
+            border-radius: 999px;
+            padding: 12px 18px;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .ghost {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--ink);
+        }
+
+        .result {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: rgba(24, 78, 119, 0.08);
+            border: 1px solid rgba(24, 78, 119, 0.12);
+            min-height: 52px;
+        }
+
+        .secret-hook {
+            position: fixed;
+            right: 16px;
+            bottom: 16px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: rgba(255, 250, 243, 0.7);
+            border: 1px solid rgba(31, 35, 40, 0.18);
+            color: rgba(31, 35, 40, 0.5);
+            font-weight: 700;
+            opacity: 0.28;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 20;
+        }
+
+        .secret-hook:hover {
+            opacity: 1;
+            transform: scale(1.03);
+        }
+
+        .secret-panel {
+            display: none;
+            margin-top: 18px;
+            padding: 18px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px dashed rgba(24, 78, 119, 0.35);
+        }
+
+        .secret-panel.open {
+            display: block;
+        }
+
+        .game-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .game-shell {
+            display: grid;
+            gap: 16px;
+        }
+
+        .game-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .game-switcher {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pill.active {
+            background: var(--accent);
+            color: white;
+            border-color: transparent;
+        }
+
+        .game-stage {
+            display: grid;
+            gap: 16px;
+        }
+
+        .arcade-game {
+            display: none;
+            padding: 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(24, 78, 119, 0.14);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .arcade-game.active {
+            display: grid;
+            gap: 14px;
+        }
+
+        .arcade-board {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .arcade-tile {
+            aspect-ratio: 1;
+            border-radius: 18px;
+            border: 1px solid rgba(24, 78, 119, 0.18);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(24, 78, 119, 0.05));
+            color: var(--ink);
+            font-size: 1rem;
+            font-weight: 700;
+            display: grid;
+            place-items: center;
+            transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .arcade-tile.active {
+            background: linear-gradient(180deg, #ffd166, #f59e0b);
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18), 0 10px 24px rgba(245, 158, 11, 0.24);
+            transform: translateY(-2px) scale(1.01);
+        }
+
+        .arcade-meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .arcade-chip {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(24, 78, 119, 0.08);
+            border: 1px solid rgba(24, 78, 119, 0.12);
+        }
+
+        .swatch-board {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .swatch {
+            min-height: 92px;
+            border-radius: 18px;
+            border: 0;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+        }
+
+        .swatch:hover,
+        .arcade-tile:hover,
+        .pill:hover,
+        .ghost:hover,
+        .primary:hover {
+            transform: translateY(-1px);
+        }
+
+        .fullscreen-note {
+            color: var(--muted);
+            font-size: 0.94rem;
+        }
+
+        .game-panel:fullscreen,
+        .game-panel:-webkit-full-screen {
+            width: 100vw;
+            height: 100vh;
+            padding: 22px;
+            overflow: auto;
+            background:
+                radial-gradient(circle at top left, rgba(24, 78, 119, 0.18), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(217, 119, 6, 0.16), transparent 30%),
+                var(--bg);
+        }
+
+        .game-panel:fullscreen .arcade-game,
+        .game-panel:-webkit-full-screen .arcade-game {
+            background: rgba(255, 250, 243, 0.9);
+        }
+
+        .pill {
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: white;
+            border: 1px solid var(--line);
+            cursor: pointer;
+        }
+
+        .game-status {
+            margin-top: 14px;
+            min-height: 28px;
+            color: var(--muted);
+        }
+
+        footer {
+            margin-top: 18px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 860px) {
+            header, .grid, .quick-facts {
+                grid-template-columns: 1fr;
+            }
+
+            .hero, .card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a class="secret-hook" href="#secret-game" aria-label="Hidden game">?</a>
+
+    <div class="page">
+        <header>
+            <section class="hero">
+                <span class="eyebrow">Profile of Alex</span>
+                <h1>Alex is the kind of person who makes calm look intentional.</h1>
+                <p class="lead">
+                    Alex is a thoughtful creative with a neat routine, a sharp eye for detail, and a habit of turning ordinary days into polished ones.
+                    He likes tidy spaces, good coffee, and projects that feel useful without being loud.
+                </p>
+
+                <div class="quick-facts">
+                    <div class="fact">
+                        <strong>Quiet focus</strong>
+                        Good at deep work and steady follow-through.
+                    </div>
+                    <div class="fact">
+                        <strong>Simple taste</strong>
+                        Prefers clean design, classic music, and strong tea.
+                    </div>
+                    <div class="fact">
+                        <strong>Weekend rule</strong>
+                        Always leaves room for a walk and a good book.
+                    </div>
+                </div>
+            </section>
+
+            <aside class="card portrait">
+                <div class="avatar">A</div>
+                <h2 class="section-title">Meet Alex</h2>
+                <p>
+                    He is organized, friendly, and surprisingly competitive when a challenge is on the table.
+                </p>
+            </aside>
+        </header>
+
+        <main>
+            <section class="grid">
+                <article class="card">
+                    <h2 class="section-title">What Alex Is Like</h2>
+                    <p class="muted">
+                        Alex keeps things simple on purpose. He likes systems that work, rooms that feel open, and ideas that can be explained clearly.
+                    </p>
+                    <ul class="list">
+                        <li>Likes crisp notebooks and color-coded plans</li>
+                        <li>Remembers the small details people mention</li>
+                        <li>Can build a good playlist for almost any mood</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2 class="section-title">A Tiny Timeline</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <strong>Morning</strong>
+                            Coffee, a short stretch, and a clean to-do list.
+                        </div>
+                        <div class="timeline-item">
+                            <strong>Afternoon</strong>
+                            Focused work, a quick walk, and a snack break that does not become a meeting.
+                        </div>
+                        <div class="timeline-item">
+                            <strong>Evening</strong>
+                            Music, a project check-in, and a little time to unwind.
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <section class="card">
+                <h2 class="section-title">Quiz: How Well Do You Know Alex?</h2>
+                <p class="muted">Pick the answer that best matches the profile above, then score yourself.</p>
+
+                <div class="quiz-grid" id="quiz">
+                    <div class="question" data-answer="b">
+                        <h3>1. What does Alex value most?</h3>
+                        <div class="choices">
+                            <label class="choice"><input type="radio" name="q1" value="a"> Fast chaos</label>
+                            <label class="choice"><input type="radio" name="q1" value="b"> Calm structure</label>
+                            <label class="choice"><input type="radio" name="q1" value="c"> Loud surprises</label>
+                        </div>
+                    </div>
+
+                    <div class="question" data-answer="a">
+                        <h3>2. What is Alex most likely to keep nearby?</h3>
+                        <div class="choices">
+                            <label class="choice"><input type="radio" name="q2" value="a"> A notebook and pen</label>
+                            <label class="choice"><input type="radio" name="q2" value="b"> A trumpet</label>
+                            <label class="choice"><input type="radio" name="q2" value="c"> A surfboard</label>
+                        </div>
+                    </div>
+
+                    <div class="question" data-answer="c">
+                        <h3>3. How does Alex prefer weekends?</h3>
+                        <div class="choices">
+                            <label class="choice"><input type="radio" name="q3" value="a"> Packed with nonstop errands</label>
+                            <label class="choice"><input type="radio" name="q3" value="b"> Spontaneous and messy</label>
+                            <label class="choice"><input type="radio" name="q3" value="c"> Balanced with a walk and a book</label>
+                        </div>
+                    </div>
+
+                    <div class="question" data-answer="b">
+                        <h3>4. What kind of playlist would Alex make?</h3>
+                        <div class="choices">
+                            <label class="choice"><input type="radio" name="q4" value="a"> Random noise only</label>
+                            <label class="choice"><input type="radio" name="q4" value="b"> Calm, polished, and thoughtful</label>
+                            <label class="choice"><input type="radio" name="q4" value="c"> One song repeated forever</label>
+                        </div>
+                    </div>
+
+                    <div class="question" data-answer="a">
+                        <h3>5. What does Alex do well?</h3>
+                        <div class="choices">
+                            <label class="choice"><input type="radio" name="q5" value="a"> Noticing details</label>
+                            <label class="choice"><input type="radio" name="q5" value="b"> Ignoring every plan</label>
+                            <label class="choice"><input type="radio" name="q5" value="c"> Forgetting his own name</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="primary" id="scoreQuiz" type="button">Check Score</button>
+                    <button class="ghost" id="resetQuiz" type="button">Reset</button>
+                </div>
+                <div class="result" id="quizResult">Your score will appear here.</div>
+            </section>
+
+            <section class="card" id="secret-game">
+                <h2 class="section-title">Hidden Corner</h2>
+                <p class="muted">
+                    This section stays tucked away so the page still feels clean. Reveal the arcade, switch between games, and open the active one in fullscreen.
+                </p>
+
+                <button class="ghost" id="toggleGame" type="button">Reveal the arcade game</button>
+
+                <div class="secret-panel game-panel" id="gamePanel">
+                    <div class="game-shell" id="gameShell">
+                        <div class="game-toolbar">
+                            <div>
+                                <h3 id="activeGameTitle">Neon Tap</h3>
+                                <p class="fullscreen-note" id="activeGameDescription">One tile lights up at random. Tap it fast before it moves.</p>
+                            </div>
+
+                            <button class="ghost" id="fullscreenGame" type="button">Fullscreen Game</button>
+                        </div>
+
+                        <div class="game-switcher" role="tablist" aria-label="Arcade games">
+                            <button class="pill active" type="button" data-game="neon">Neon Tap</button>
+                            <button class="pill" type="button" data-game="color">Color Match</button>
+                        </div>
+
+                        <div class="game-stage">
+                            <section class="arcade-game active" data-game-panel="neon">
+                                <div class="arcade-meta">
+                                    <span class="arcade-chip" id="arcadeScore">Score: 0</span>
+                                    <span class="arcade-chip" id="arcadeTime">Time: 20</span>
+                                    <span class="arcade-chip" id="arcadeState">Ready to play</span>
+                                </div>
+
+                                <div class="arcade-board" id="arcadeBoard">
+                                    <button class="arcade-tile" type="button" data-tile="0">1</button>
+                                    <button class="arcade-tile" type="button" data-tile="1">2</button>
+                                    <button class="arcade-tile" type="button" data-tile="2">3</button>
+                                    <button class="arcade-tile" type="button" data-tile="3">4</button>
+                                    <button class="arcade-tile" type="button" data-tile="4">5</button>
+                                    <button class="arcade-tile" type="button" data-tile="5">6</button>
+                                    <button class="arcade-tile" type="button" data-tile="6">7</button>
+                                    <button class="arcade-tile" type="button" data-tile="7">8</button>
+                                    <button class="arcade-tile" type="button" data-tile="8">9</button>
+                                </div>
+
+                                <div class="actions">
+                                    <button class="primary" id="startArcade" type="button">Start Round</button>
+                                    <button class="ghost" id="resetArcade" type="button">Reset</button>
+                                </div>
+
+                                <div class="game-status" id="gameStatus">Tap Start Round to begin.</div>
+                            </section>
+
+                            <section class="arcade-game" data-game-panel="color">
+                                <p class="muted">Pick the swatch that matches the highlighted color name. You get a point for every correct match before time runs out.</p>
+
+                                <div class="arcade-meta">
+                                    <span class="arcade-chip" id="colorScore">Score: 0</span>
+                                    <span class="arcade-chip" id="colorTime">Time: 18</span>
+                                    <span class="arcade-chip" id="colorState">Ready to play</span>
+                                </div>
+
+                                <div class="question">
+                                    <h3 id="colorPrompt">Match the color: Warm Sand</h3>
+                                    <div class="swatch-board" id="swatchBoard"></div>
+                                </div>
+
+                                <div class="actions">
+                                    <button class="primary" id="startColor" type="button">Start Round</button>
+                                    <button class="ghost" id="resetColor" type="button">Reset</button>
+                                </div>
+
+                                <div class="game-status" id="colorStatus">Tap Start Round to begin.</div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            Alex likes clear goals, quiet confidence, and websites that leave one good surprise.
+        </footer>
+    </div>
+
+    <script>
+        const scoreButton = document.getElementById('scoreQuiz');
+        const resetButton = document.getElementById('resetQuiz');
+        const quizResult = document.getElementById('quizResult');
+        const questions = Array.from(document.querySelectorAll('.quiz-grid .question'));
+
+        scoreButton.addEventListener('click', () => {
+            let score = 0;
+
+            questions.forEach((question, index) => {
+                const answer = question.dataset.answer;
+                const choice = document.querySelector(`input[name="q${index + 1}"]:checked`);
+                if (choice && choice.value === answer) {
+                    score += 1;
+                }
+            });
+
+            const message = score === 5
+                ? 'Perfect score. You know Alex very well.'
+                : score >= 3
+                    ? `Nice. You scored ${score}/5.`
+                    : `You scored ${score}/5. Take another look at Alex’s profile.`;
+
+            quizResult.textContent = message;
+        });
+
+        resetButton.addEventListener('click', () => {
+            document.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.checked = false;
+            });
+            quizResult.textContent = 'Your score will appear here.';
+        });
+
+        const toggleGame = document.getElementById('toggleGame');
+        const gamePanel = document.getElementById('gamePanel');
+        const fullscreenGame = document.getElementById('fullscreenGame');
+        const gameButtons = Array.from(document.querySelectorAll('[data-game]'));
+        const gamePanels = Array.from(document.querySelectorAll('[data-game-panel]'));
+        const activeGameTitle = document.getElementById('activeGameTitle');
+        const activeGameDescription = document.getElementById('activeGameDescription');
+        const gameStatus = document.getElementById('gameStatus');
+        const colorStatus = document.getElementById('colorStatus');
+        const arcadeBoard = document.getElementById('arcadeBoard');
+        const arcadeTiles = Array.from(document.querySelectorAll('.arcade-tile'));
+        const startArcade = document.getElementById('startArcade');
+        const resetArcade = document.getElementById('resetArcade');
+        const arcadeScore = document.getElementById('arcadeScore');
+        const arcadeTime = document.getElementById('arcadeTime');
+        const arcadeState = document.getElementById('arcadeState');
+        const startColor = document.getElementById('startColor');
+        const resetColor = document.getElementById('resetColor');
+        const colorScore = document.getElementById('colorScore');
+        const colorTime = document.getElementById('colorTime');
+        const colorState = document.getElementById('colorState');
+        const colorPrompt = document.getElementById('colorPrompt');
+        const swatchBoard = document.getElementById('swatchBoard');
+
+        const colorOptions = [
+            { name: 'Warm Sand', value: '#d9b38c' },
+            { name: 'Deep Sea', value: '#184e77' },
+            { name: 'Apricot Glow', value: '#f4a261' },
+            { name: 'Forest Moss', value: '#6c8c55' },
+            { name: 'Ink Night', value: '#2f3e46' },
+            { name: 'Gold Hour', value: '#d97706' }
+        ];
+
+        let activeGame = 'neon';
+        let activeTile = null;
+        let score = 0;
+        let timeLeft = 20;
+        let gameRunning = false;
+        let moveTimer = null;
+        let countdownTimer = null;
+        let colorScoreValue = 0;
+        let colorTimeLeft = 18;
+        let colorRunning = false;
+        let colorTimer = null;
+        let currentColor = null;
+
+        function clearActiveTile() {
+            arcadeTiles.forEach(tile => tile.classList.remove('active'));
+        }
+
+        function setRandomTile() {
+            clearActiveTile();
+            activeTile = arcadeTiles[Math.floor(Math.random() * arcadeTiles.length)];
+            activeTile.classList.add('active');
+        }
+
+        function updateHud() {
+            arcadeScore.textContent = `Score: ${score}`;
+            arcadeTime.textContent = `Time: ${timeLeft}`;
+        }
+
+        function updateColorHud() {
+            colorScore.textContent = `Score: ${colorScoreValue}`;
+            colorTime.textContent = `Time: ${colorTimeLeft}`;
+        }
+
+        function setActiveGame(gameName) {
+            activeGame = gameName;
+            gameButtons.forEach(button => {
+                button.classList.toggle('active', button.dataset.game === gameName);
+            });
+            gamePanels.forEach(panel => {
+                panel.classList.toggle('active', panel.dataset.gamePanel === gameName);
+            });
+
+            if (gameName === 'neon') {
+                activeGameTitle.textContent = 'Neon Tap';
+                activeGameDescription.textContent = 'One tile lights up at random. Tap it fast before it moves.';
+            } else {
+                activeGameTitle.textContent = 'Color Match';
+                activeGameDescription.textContent = 'Pick the swatch that matches the highlighted color name.';
+            }
+        }
+
+        function stopNeonGame(message) {
+            gameRunning = false;
+            clearInterval(moveTimer);
+            clearInterval(countdownTimer);
+            moveTimer = null;
+            countdownTimer = null;
+            clearActiveTile();
+            arcadeState.textContent = message;
+            gameStatus.textContent = message;
+            arcadeBoard.style.pointerEvents = 'none';
+            startArcade.textContent = 'Play Again';
+        }
+
+        function resetNeonGame() {
+            score = 0;
+            timeLeft = 20;
+            activeTile = null;
+            updateHud();
+            clearActiveTile();
+            arcadeState.textContent = 'Ready to play';
+            gameStatus.textContent = 'Tap Start Round to begin.';
+            arcadeBoard.style.pointerEvents = 'none';
+            startArcade.textContent = 'Start Round';
+        }
+
+        function startNeonGame() {
+            score = 0;
+            timeLeft = 20;
+            gameRunning = true;
+            arcadeBoard.style.pointerEvents = 'auto';
+            arcadeState.textContent = 'Go!';
+            gameStatus.textContent = 'Tap the glowing tile.';
+            startArcade.textContent = 'Restart Round';
+            updateHud();
+            setRandomTile();
+
+            clearInterval(moveTimer);
+            clearInterval(countdownTimer);
+
+            moveTimer = setInterval(() => {
+                if (gameRunning) {
+                    setRandomTile();
+                }
+            }, 700);
+
+            countdownTimer = setInterval(() => {
+                if (!gameRunning) {
+                    return;
+                }
+
+                timeLeft -= 1;
+                updateHud();
+
+                if (timeLeft <= 0) {
+                    stopNeonGame(`Time's up. Final score: ${score}.`);
+                }
+            }, 1000);
+        }
+
+        function buildColorBoard(target) {
+            const shuffled = [...colorOptions].sort(() => Math.random() - 0.5);
+            swatchBoard.innerHTML = '';
+
+            shuffled.forEach(option => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'swatch';
+                button.textContent = option.name;
+                button.style.background = option.value;
+                button.dataset.colorName = option.name;
+
+                button.addEventListener('click', () => {
+                    if (!colorRunning) {
+                        return;
+                    }
+
+                    if (option.name === target.name) {
+                        colorScoreValue += 1;
+                        colorState.textContent = 'Correct. New target locked in.';
+                        colorStatus.textContent = 'Good eye. Keep going.';
+                        updateColorHud();
+                        launchColorRound();
+                    } else {
+                        colorState.textContent = 'Try again.';
+                        colorStatus.textContent = 'That swatch is close, but not quite the match.';
+                    }
+                });
+
+                swatchBoard.appendChild(button);
+            });
+        }
+
+        function launchColorRound() {
+            currentColor = colorOptions[Math.floor(Math.random() * colorOptions.length)];
+            colorPrompt.textContent = `Match the color: ${currentColor.name}`;
+            buildColorBoard(currentColor);
+        }
+
+        function stopColorGame(message) {
+            colorRunning = false;
+            clearInterval(colorTimer);
+            colorTimer = null;
+            colorState.textContent = message;
+            colorStatus.textContent = message;
+            startColor.textContent = 'Play Again';
+        }
+
+        function resetColorGame() {
+            colorScoreValue = 0;
+            colorTimeLeft = 18;
+            updateColorHud();
+            colorRunning = false;
+            clearInterval(colorTimer);
+            colorTimer = null;
+            colorPrompt.textContent = 'Match the color: Warm Sand';
+            swatchBoard.innerHTML = '';
+            colorState.textContent = 'Ready to play';
+            colorStatus.textContent = 'Tap Start Round to begin.';
+            startColor.textContent = 'Start Round';
+        }
+
+        function startColorGame() {
+            colorScoreValue = 0;
+            colorTimeLeft = 18;
+            colorRunning = true;
+            colorState.textContent = 'Go!';
+            colorStatus.textContent = 'Choose the matching swatch.';
+            startColor.textContent = 'Restart Round';
+            updateColorHud();
+            launchColorRound();
+
+            clearInterval(colorTimer);
+
+            colorTimer = setInterval(() => {
+                if (!colorRunning) {
+                    return;
+                }
+
+                colorTimeLeft -= 1;
+                updateColorHud();
+
+                if (colorTimeLeft <= 0) {
+                    stopColorGame(`Time's up. Final score: ${colorScoreValue}.`);
+                }
+            }, 1000);
+        }
+
+        toggleGame.addEventListener('click', () => {
+            gamePanel.classList.toggle('open');
+            if (gamePanel.classList.contains('open')) {
+                setActiveGame(activeGame);
+                resetNeonGame();
+                resetColorGame();
+            } else {
+                stopNeonGame('Tap Start Round to begin.');
+                stopColorGame('Tap Start Round to begin.');
+            }
+        });
+
+        gameButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const nextGame = button.dataset.game;
+
+                if (nextGame === activeGame) {
+                    return;
+                }
+
+                if (activeGame === 'neon') {
+                    stopNeonGame('Tap Start Round to begin.');
+                } else {
+                    stopColorGame('Tap Start Round to begin.');
+                }
+
+                setActiveGame(nextGame);
+            });
+        });
+
+        arcadeTiles.forEach(tile => {
+            tile.addEventListener('click', () => {
+                if (!gamePanel.classList.contains('open') || !gameRunning) {
+                    return;
+                }
+
+                if (tile === activeTile) {
+                    score += 1;
+                    gameStatus.textContent = 'Nice hit. Keep going.';
+                    updateHud();
+                    setRandomTile();
+                }
+            });
+        });
+
+        startArcade.addEventListener('click', () => {
+            startNeonGame();
+        });
+
+        resetArcade.addEventListener('click', () => {
+            stopNeonGame('Tap Start Round to begin.');
+            resetNeonGame();
+        });
+
+        startColor.addEventListener('click', () => {
+            startColorGame();
+        });
+
+        resetColor.addEventListener('click', () => {
+            stopColorGame('Tap Start Round to begin.');
+            resetColorGame();
+        });
+
+        fullscreenGame.addEventListener('click', async () => {
+            if (document.fullscreenElement) {
+                await document.exitFullscreen();
+                return;
+            }
+
+            if (gamePanel.requestFullscreen) {
+                await gamePanel.requestFullscreen();
+            } else if (gamePanel.webkitRequestFullscreen) {
+                gamePanel.webkitRequestFullscreen();
+            }
+        });
+
+        updateHud();
+        updateColorHud();
+        setActiveGame('neon');
+        arcadeBoard.style.pointerEvents = 'none';
+        swatchBoard.innerHTML = '';
+        resetNeonGame();
+        resetColorGame();
+    </script>
+</body>
+</html>
